@@ -3,7 +3,7 @@
         participant browser
         participant server
 
-        Note right of browser: THe broswer enters a note in the text field and submits the form
+        Note right of browser: The broswer enters a note in the text field and submits the form
 
         browser->>server:   POST https://fullstack-exampleapp.herokuapp.com/new_note
         activate server
@@ -34,5 +34,5 @@
         server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
         deactivate server
 
-        Note right of browser: The browser executes the callback function that renders the notes
+        Note right of browser: The browser executes the callback function that renders the notes;
     ```
