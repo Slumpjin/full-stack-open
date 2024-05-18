@@ -6,6 +6,18 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  const getTotalVotes = () => good + neutral + bad
+
+  const getAverageScore = () => {
+    const totalVotes = getTotalVotes()
+    return totalVotes ? (good + -1 * bad) / totalVotes : 0
+  }
+
+  const getPositivePercentage = () => {
+    const totalVotes = getTotalVotes()
+    return totalVotes ? (good / totalVotes) * 100 : 0
+  }
+
   return (
     <div>
       <h1>give feedback</h1>
@@ -18,6 +30,9 @@ const App = () => {
       <div>{'good ' + good}</div>
       <div>{'neutral ' + neutral}</div>
       <div>{'bad ' + bad}</div>
+      <div>{'all ' + getTotalVotes()}</div>
+      <div>{'average ' + getAverageScore()}</div>
+      <div>{'positive ' + getPositivePercentage() + '%'}</div>
     </div>
   )
 }
