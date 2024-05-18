@@ -1,5 +1,11 @@
 import { useState } from 'react'
 
+const Statistics = (props) => {
+  return (
+    <div>{'positive ' + props.getPercentage() + '%'}</div>
+  )
+}
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
@@ -32,7 +38,7 @@ const App = () => {
       <div>{'bad ' + bad}</div>
       <div>{'all ' + getTotalVotes()}</div>
       <div>{'average ' + getAverageScore()}</div>
-      <div>{'positive ' + getPositivePercentage() + '%'}</div>
+      <Statistics getPercentage={getPositivePercentage}/>
     </div>
   )
 }
