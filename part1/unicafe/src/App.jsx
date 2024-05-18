@@ -13,15 +13,29 @@ const Statistics = (props) => {
     return totalVotes ? (props.good / totalVotes) * 100 : 0
   }
 
+  const hasFeedback = () => props.good || props.neutral || props.bad
+
+  const renderFeedback = () => {
+    return hasFeedback() ? (
+      <>
+        <div>{'good ' + props.good}</div>
+        <div>{'neutral ' + props.neutral}</div>
+        <div>{'bad ' + props.bad}</div>
+        <div>{'all ' + getTotalVotes()}</div>
+        <div>{'average ' + getAverageScore()}</div>
+        <div>{'positive ' + getPositivePercentage() + '%'}</div>
+      </>
+    ) : (
+      <>
+        <h2>No feedback given</h2>
+      </>
+    )
+  }
+
   return (
     <>
       <h1>statistics</h1>
-      <div>{'good ' + props.good}</div>
-      <div>{'neutral ' + props.neutral}</div>
-      <div>{'bad ' + props.bad}</div>
-      <div>{'all ' + getTotalVotes()}</div>
-      <div>{'average ' + getAverageScore()}</div>
-      <div>{'positive ' + getPositivePercentage() + '%'}</div>
+      {renderFeedback()}
     </>
   )
 }
