@@ -11,7 +11,10 @@ const Button = (props) => {
 const StatisticLine = (props) => {
   return (
     <>
-      <div>{props.text + ' ' + props.value}</div>
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value}</td>
+      </tr>
     </>
   )
 }
@@ -34,12 +37,16 @@ const Statistics = (props) => {
   const renderFeedback = () => {
     return hasFeedback() ? (
       <>
-        <StatisticLine text={'good'} value={props.good}/>
-        <StatisticLine text={'neutral'} value={props.neutral}/>
-        <StatisticLine text={'bad'} value={props.bad}/>
-        <StatisticLine text={'all'} value={getTotalVotes()}/>
-        <StatisticLine text={'average'} value={getAverageScore()}/>
-        <StatisticLine text={'positive'} value={getPositivePercentage() + '%'}/>
+        <table>
+          <tbody>            
+            <StatisticLine text={'good'} value={props.good}/>
+            <StatisticLine text={'neutral'} value={props.neutral}/>
+            <StatisticLine text={'bad'} value={props.bad}/>
+            <StatisticLine text={'all'} value={getTotalVotes()}/>
+            <StatisticLine text={'average'} value={getAverageScore()}/>
+            <StatisticLine text={'positive'} value={getPositivePercentage() + '%'}/>
+          </tbody>
+        </table>
       </>
     ) : (
       <>
