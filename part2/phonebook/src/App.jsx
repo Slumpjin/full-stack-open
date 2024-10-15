@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
-import axios from 'axios'
+import phonebookService from './services/phonebook'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,12 +12,12 @@ const App = () => {
   const filteredPersons = filter ? persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase()))
     : persons
-  const baseUrl = 'http://localhost:3001/persons'
 
   useEffect(() => {
-    axios.get(baseUrl)
-      .then(response => {
-        setPersons(response.data)
+    phonebookService
+      .getAll()
+      .then(persons => {
+        setPersons(persons)
       })
   }, [])
 
@@ -27,8 +27,8 @@ const App = () => {
       number: newPhoneNumber
     }
 
-    axios.post(baseUrl, personObject)
-      .then(response => response.data)
+    phonebookService
+      .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
       })
