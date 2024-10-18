@@ -1,6 +1,16 @@
-const Persons = ({ persons }) => {
+import Person from './Person'
+
+const Persons = ({ persons, onDelete }) => {
     return (
-        persons.map((person) => <div key={person.id}>{person.name} {person.number}</div>)
+        persons.map((person) => {
+            return (
+                <Person
+                    key={person.id}
+                    person={person}
+                    onDelete={onDelete}
+                />
+            )
+        })
     )
 }
 

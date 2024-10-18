@@ -34,6 +34,19 @@ const App = () => {
       })
   }
 
+  const handleDelete = (e) => {
+    const elementId = e.target.parentElement.dataset.id
+    const person = getPersonInPhonebook(elementId)
+
+    if (person && confirm(`Delete ${person.name} from phonebook?`)) {
+      phonebookService.remove(elementId)
+        .catch(error => {
+          alert(`${person.name} was already deleted from the phonebook`)
+        })
+      setPersons(persons.filter(person => person.id !== elementId))
+    }
+  }
+
   const handleNameChange = (e) => {
     setNewName(e.target.value)
   }
@@ -64,6 +77,10 @@ const App = () => {
       && person.number === newPhoneNumber)
   }
 
+  const getPersonInPhonebook = (id) => {
+    return persons.find(person => person.id === id)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -77,7 +94,10 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons
+        persons={filteredPersons}
+        onDelete={handleDelete}
+      />
     </div>
   )
 }
