@@ -21,17 +21,21 @@ const App = () => {
       })
   }, [])
 
-  const addPerson = () => {
-    const personObject = {
-      name: newName,
-      number: newPhoneNumber
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault()
 
-    phonebookService
-      .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-      })
+    const person = getPersonInPhonebookByName(newName)
+    if (person !== undefined) {
+      if (confirm(`${person.name} ${person.number} is already added to the phonebook, replace the old number with a new one?`)) {
+        updatePerson(person)
+      }
+    }
+    else {
+      addPerson()
+    }
+    setNewName('')
+    setNewPhoneNumber('')
+    e.target.reset()
   }
 
   const handleDelete = (e) => {
@@ -59,22 +63,32 @@ const App = () => {
     setFilter(e.target.value)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (isPersonInPhonebook()) {
-      window.alert(`${newName} ${newPhoneNumber} is already added to the phonebook`)
+  const addPerson = () => {
+    const personObject = {
+      name: newName,
+      number: newPhoneNumber
     }
-    else {
-      addPerson()
-    }
-    setNewName('')
-    setNewPhoneNumber('')
-    e.target.reset()
+    phonebookService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+      })
   }
 
-  const isPersonInPhonebook = () => {
-    return persons.some(person => person.name === newName
-      && person.number === newPhoneNumber)
+  const updatePerson = (person) => {
+    const updatedPersonObject = {
+      ...person,
+      number: newPhoneNumber
+    }
+    phonebookService
+      .update(person.id, updatedPersonObject)
+      .then(() => {
+        setPersons(persons.map(p => p.id === person.id ? updatedPersonObject : p))
+      })
+  }
+
+  const getPersonInPhonebookByName = (name) => {
+    return persons.find(person => person.name === name)
   }
 
   const getPersonInPhonebook = (id) => {
