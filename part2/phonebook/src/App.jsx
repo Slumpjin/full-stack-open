@@ -3,12 +3,15 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import phonebookService from './services/phonebook'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhoneNumber, setNewPhoneNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
   const filteredPersons = filter ? persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase()))
     : persons
@@ -44,6 +47,9 @@ const App = () => {
 
     if (person && confirm(`Delete ${person.name} from phonebook?`)) {
       phonebookService.remove(elementId)
+        .then(data => {
+          setSuccessNotification(`Successfully deleted ${person.name}`)
+        })
         .catch(error => {
           alert(`${person.name} was already deleted from the phonebook`)
         })
@@ -72,6 +78,7 @@ const App = () => {
       .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setSuccessNotification(`Successfully added ${personObject.name}`)
       })
   }
 
@@ -84,6 +91,7 @@ const App = () => {
       .update(person.id, updatedPersonObject)
       .then(() => {
         setPersons(persons.map(p => p.id === person.id ? updatedPersonObject : p))
+        setSuccessNotification(`Successfully updated ${updatedPersonObject.name}`)
       })
   }
 
@@ -95,9 +103,29 @@ const App = () => {
     return persons.find(person => person.id === id)
   }
 
+  const setSuccessNotification = (message) => {
+    setSuccessMessage(message)
+
+    setTimeout(() => {
+      setSuccessMessage(null)
+    }, 3000)
+  }
+
+  const setErrorNotification = (message) => {
+    setErrorMessage(message)
+
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 3000)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+      />
       <Filter onFilterChange={handleFilterChange} />
 
       <h2>add a new</h2>
