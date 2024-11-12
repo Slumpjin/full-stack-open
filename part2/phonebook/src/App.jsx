@@ -51,7 +51,7 @@ const App = () => {
           setSuccessNotification(`Successfully deleted ${person.name}`)
         })
         .catch(error => {
-          alert(`${person.name} was already deleted from the phonebook`)
+          setErrorNotification(`${person.name} was already deleted from the phonebook`)
         })
       setPersons(persons.filter(person => person.id !== elementId))
     }
