@@ -1,5 +1,6 @@
 import './App.css'
 import { useState, useEffect } from 'react'
+import Country from './components/Country.jsx'
 import CountryView from './components/CountryView.jsx'
 import countriesService from './services/countries.js'
 
@@ -46,7 +47,7 @@ function App() {
     }
 
     return filteredCountries
-      .map(country => <div key={country.cca3}>{country.name.common}</div>)
+      .map(country => <Country country={country} searchInput={searchInput} />)
   }
 
   return (
