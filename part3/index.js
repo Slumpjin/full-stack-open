@@ -58,6 +58,15 @@ app.delete('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
     const person = req.body
+    if (!person.name) {
+        return res.status(400).json({ "error": "Name is required" })
+    }
+    if (!person.number) {
+        return res.status(400).json({ "error": "Phone number is required" })
+    }
+    if (persons.find(p => p.name === person.name)) {
+        return res.status(400).json({ "error": "Person already exists in the phonbook" })
+    }
 
     const id = Math.floor(Math.random() * 10000)
     const newPerson = { "id": String(id), ...person }
